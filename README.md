@@ -26,6 +26,7 @@ This repository was developed as part of a technical assignment.
 │   └── example-app.yaml     # Deployment specification
 │
 ├── prodctl.py               # CLI entrypoint
+├── script.sh                # Bootstrap script
 ├── requirements.txt
 ├── README.md
 └── .gitignore
@@ -63,6 +64,55 @@ The system is split into clear layers:
 
 ---
 
+## 🚀 Quick Start
+
+### Option 1: Automated Setup (Recommended)
+
+1. **Clone and setup SLURM cluster:**
+```bash
+git clone https://github.com/janchorowski/slurm-docker-cluster.git
+cd slurm-docker-cluster
+make build
+make up
+make test
+make queue-ai-jobs
+make status
+```
+
+2. **Run the bootstrap script:**
+```bash
+chmod +x script.sh
+./script.sh
+```
+
+The script will:
+- Create a virtual environment
+- Install dependencies
+- Verify SLURM cluster connectivity
+- Clean previous state
+- Deploy the example application
+
+### Option 2: Manual Setup
+
+1. **Setup Python environment:**
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+2. **Verify SLURM cluster:**
+```bash
+docker exec -it slurmctld sinfo
+```
+
+3. **Deploy your first application:**
+```bash
+python prodctl.py deploy specs/example-app.yaml
+```
+
+---
+
 ## 📄 Deployment Specification (YAML)
 
 Each job is described using a deployment spec.
@@ -95,7 +145,7 @@ logs_dir: ".logs"
 
 ---
 
-## 🚀 How It Works
+## 🔧 How It Works
 
 ### 1. Code Staging
 - Job code is copied from host into `/data/apps/<app>/replica-<id>`
@@ -190,7 +240,6 @@ sqlite3 .state/state.db
 - Minimal dependencies
 
 ---
-
 
 ## 🧹 `.gitignore`
 
