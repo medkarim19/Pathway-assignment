@@ -1,0 +1,16 @@
+name: example-app
+workdir: jobs/example_app
+entrypoint: ./run.sh
+
+resources:
+  cpus: 1
+  mem_mb: 512
+
+replicas: 2
+
+slurm:
+  partition: "normal"
+  time_limit: "00:10:00"
+
+logs_dir: ".logs"
+
